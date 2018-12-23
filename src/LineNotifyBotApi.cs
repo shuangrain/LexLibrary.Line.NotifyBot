@@ -4,9 +4,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace LexLibrary.Line.NotifyBot
 {
@@ -93,6 +95,27 @@ namespace LexLibrary.Line.NotifyBot
             var result = await executeApi<TokenResponseDTO>(HttpMethod.Post, _setting.TokenApi, query: query);
 
             return result;
+        }
+
+        /// <summary>
+        /// 產生 Authorize Url
+        /// </summary>
+        /// <param name="callbackUrl"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public string GenerateAuthorizeUrl(string callbackUrl, string state = null)
+        {
+            var query = new Dictionary<string, string>();
+
+            query.Add("response_type", "code");
+            query.Add("client_id", _setting.ClientID);
+            query.Add("redirect_uri", callbackUrl);
+            query.Add("scope", "notify");
+            query.Add("state", state);
+
+            var list = query.Select(x => string.Format("{0}={1}", x.Key, HttpUtility.UrlEncode(x.Value)));
+
+            return $"{_setting.AuthorizeApi}?{string.Join("&", list)}";
         }
 
         private async Task<T> executeApi<T>(
