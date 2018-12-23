@@ -103,7 +103,7 @@ namespace LexLibrary.Line.NotifyBot
         /// <param name="callbackUrl"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        public string GenerateAuthorizeUrl(string callbackUrl, string state = null)
+        public string GenerateAuthorizeUrl(string callbackUrl, string state)
         {
             var query = new Dictionary<string, string>();
 
@@ -150,11 +150,12 @@ namespace LexLibrary.Line.NotifyBot
             HttpResponseMessage httpResponseMessage = await _httpClient.SendAsync(httpRequestMessage);
 
             string stringResult = await httpResponseMessage.Content.ReadAsStringAsync();
+            var headers = httpResponseMessage.Headers?.ToDictionary(x => x.Key, x => x.Value);
 
             _logger.LogInformation(JsonConvert.SerializeObject(new
             {
                 Guid = guid,
-                httpResponseMessage.Headers,
+                Headers = headers,
                 Body = tryParseJson(stringResult, out JToken token) ? token : stringResult
             }));
 
@@ -176,7 +177,10 @@ namespace LexLibrary.Line.NotifyBot
 
             try
             {
-                return JsonConvert.DeserializeObject<T>(stringResult);
+                var model = JsonConvert.DeserializeObject<T>(stringResult);
+                model.Headers = headers;
+
+                return model;
             }
             catch (Exception ex)
             {

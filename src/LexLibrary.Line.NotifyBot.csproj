@@ -8,7 +8,7 @@
 Blog：https://blog.exfast.me</Description>
     <PackageProjectUrl>https://github.com/shuangrain/LexLibrary.Line.NotifyBot</PackageProjectUrl>
     <Copyright>https://blog.exfast.me</Copyright>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <RepositoryUrl>https://github.com/shuangrain/LexLibrary.Line.NotifyBot</RepositoryUrl>
     <PackageLicenseUrl>https://blog.exfast.me</PackageLicenseUrl>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
