@@ -10,12 +10,21 @@ using System.Threading.Tasks;
 
 namespace LexLibrary.Line.NotifyBot
 {
+    /// <summary>
+    /// LineNotifyBotApi
+    /// </summary>
     public class LineNotifyBotApi
     {
         private readonly LineNotifyBotSetting _setting = null;
         private readonly HttpClient _httpClient = null;
         private readonly ILogger _logger = null;
 
+        /// <summary>
+        /// 建構子
+        /// </summary>
+        /// <param name="setting"></param>
+        /// <param name="httpClientFactory"></param>
+        /// <param name="logger"></param>
         public LineNotifyBotApi(
             LineNotifyBotSetting setting,
             IHttpClientFactory httpClientFactory,
@@ -26,6 +35,11 @@ namespace LexLibrary.Line.NotifyBot
             _logger = logger;
         }
 
+        /// <summary>
+        /// 通知使用者
+        /// </summary>
+        /// <param name="requestDTO"></param>
+        /// <returns></returns>
         public async Task<NotifyResponseDTO> Notify(NotifyRequestDTO requestDTO)
         {
             var query = new Dictionary<string, string>();
@@ -37,6 +51,11 @@ namespace LexLibrary.Line.NotifyBot
             return result;
         }
 
+        /// <summary>
+        /// 查詢 Token 狀態
+        /// </summary>
+        /// <param name="requestDTO"></param>
+        /// <returns></returns>
         public async Task<StatusResponseDTO> Status(StatusRequestDTO requestDTO)
         {
             var result = await executeApi<StatusResponseDTO>(HttpMethod.Get, _setting.StatusApi, requestDTO.AccessToken);
@@ -44,6 +63,11 @@ namespace LexLibrary.Line.NotifyBot
             return result;
         }
 
+        /// <summary>
+        /// 撤回 Token
+        /// </summary>
+        /// <param name="requestDTO"></param>
+        /// <returns></returns>
         public async Task<RevokeResponseDTO> Revoke(RevokeRequestDTO requestDTO)
         {
             var result = await executeApi<RevokeResponseDTO>(HttpMethod.Post, _setting.RevokeApi, requestDTO.AccessToken);
@@ -51,6 +75,11 @@ namespace LexLibrary.Line.NotifyBot
             return result;
         }
 
+        /// <summary>
+        /// 取得 Token
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<TokenResponseDTO> Token(TokenRequestDTO model)
         {
             var query = new Dictionary<string, string>();
