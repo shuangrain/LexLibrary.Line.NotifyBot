@@ -21,14 +21,7 @@ namespace LexLibrary.Line.NotifyBot
         /// <returns></returns>
         public static IServiceCollection AddLineNotifyBot(this IServiceCollection services, LineNotifyBotSetting setting)
         {
-            services.AddScoped((sp) =>
-            {
-                var httpClientFactory = sp.GetService<IHttpClientFactory>();
-                var logger = sp.GetService<ILogger<LineNotifyBotApi>>();
-
-                return new LineNotifyBotApi(setting, httpClientFactory, logger);
-            });
-
+            services.AddLineNotifyBot(sp => setting);
             return services;
         }
 
@@ -40,6 +33,7 @@ namespace LexLibrary.Line.NotifyBot
         /// <returns></returns>
         public static IServiceCollection AddLineNotifyBot(this IServiceCollection services, Func<IServiceProvider, LineNotifyBotSetting> setupAction)
         {
+            services.AddHttpClient();
             services.AddScoped((sp) =>
             {
                 var httpClientFactory = sp.GetService<IHttpClientFactory>();
